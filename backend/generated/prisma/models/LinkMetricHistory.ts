@@ -33,6 +33,8 @@ export type LinkMetricHistoryAvgAggregateOutputType = {
   icmpPacketLoss: number | null
   httpStatusCode: number | null
   httpResponseTime: number | null
+  httpsStatusCode: number | null
+  httpsResponseTime: number | null
   tcpResponseTime: number | null
   dnsResponseTime: number | null
   downloadMbps: number | null
@@ -48,6 +50,8 @@ export type LinkMetricHistorySumAggregateOutputType = {
   icmpPacketLoss: number | null
   httpStatusCode: number | null
   httpResponseTime: number | null
+  httpsStatusCode: number | null
+  httpsResponseTime: number | null
   tcpResponseTime: number | null
   dnsResponseTime: number | null
   downloadMbps: number | null
@@ -67,6 +71,9 @@ export type LinkMetricHistoryMinAggregateOutputType = {
   httpStatusCode: number | null
   httpResponseTime: number | null
   httpSuccess: boolean | null
+  httpsStatusCode: number | null
+  httpsResponseTime: number | null
+  httpsSuccess: boolean | null
   tcpResponseTime: number | null
   tcpConnected: boolean | null
   dnsResponseTime: number | null
@@ -90,6 +97,9 @@ export type LinkMetricHistoryMaxAggregateOutputType = {
   httpStatusCode: number | null
   httpResponseTime: number | null
   httpSuccess: boolean | null
+  httpsStatusCode: number | null
+  httpsResponseTime: number | null
+  httpsSuccess: boolean | null
   tcpResponseTime: number | null
   tcpConnected: boolean | null
   dnsResponseTime: number | null
@@ -113,6 +123,9 @@ export type LinkMetricHistoryCountAggregateOutputType = {
   httpStatusCode: number
   httpResponseTime: number
   httpSuccess: number
+  httpsStatusCode: number
+  httpsResponseTime: number
+  httpsSuccess: number
   tcpResponseTime: number
   tcpConnected: number
   dnsResponseTime: number
@@ -134,6 +147,8 @@ export type LinkMetricHistoryAvgAggregateInputType = {
   icmpPacketLoss?: true
   httpStatusCode?: true
   httpResponseTime?: true
+  httpsStatusCode?: true
+  httpsResponseTime?: true
   tcpResponseTime?: true
   dnsResponseTime?: true
   downloadMbps?: true
@@ -149,6 +164,8 @@ export type LinkMetricHistorySumAggregateInputType = {
   icmpPacketLoss?: true
   httpStatusCode?: true
   httpResponseTime?: true
+  httpsStatusCode?: true
+  httpsResponseTime?: true
   tcpResponseTime?: true
   dnsResponseTime?: true
   downloadMbps?: true
@@ -168,6 +185,9 @@ export type LinkMetricHistoryMinAggregateInputType = {
   httpStatusCode?: true
   httpResponseTime?: true
   httpSuccess?: true
+  httpsStatusCode?: true
+  httpsResponseTime?: true
+  httpsSuccess?: true
   tcpResponseTime?: true
   tcpConnected?: true
   dnsResponseTime?: true
@@ -191,6 +211,9 @@ export type LinkMetricHistoryMaxAggregateInputType = {
   httpStatusCode?: true
   httpResponseTime?: true
   httpSuccess?: true
+  httpsStatusCode?: true
+  httpsResponseTime?: true
+  httpsSuccess?: true
   tcpResponseTime?: true
   tcpConnected?: true
   dnsResponseTime?: true
@@ -214,6 +237,9 @@ export type LinkMetricHistoryCountAggregateInputType = {
   httpStatusCode?: true
   httpResponseTime?: true
   httpSuccess?: true
+  httpsStatusCode?: true
+  httpsResponseTime?: true
+  httpsSuccess?: true
   tcpResponseTime?: true
   tcpConnected?: true
   dnsResponseTime?: true
@@ -324,6 +350,9 @@ export type LinkMetricHistoryGroupByOutputType = {
   httpStatusCode: number | null
   httpResponseTime: number | null
   httpSuccess: boolean | null
+  httpsStatusCode: number | null
+  httpsResponseTime: number | null
+  httpsSuccess: boolean | null
   tcpResponseTime: number | null
   tcpConnected: boolean | null
   dnsResponseTime: number | null
@@ -370,6 +399,9 @@ export type LinkMetricHistoryWhereInput = {
   httpStatusCode?: Prisma.IntNullableFilter<"LinkMetricHistory"> | number | null
   httpResponseTime?: Prisma.FloatNullableFilter<"LinkMetricHistory"> | number | null
   httpSuccess?: Prisma.BoolNullableFilter<"LinkMetricHistory"> | boolean | null
+  httpsStatusCode?: Prisma.IntNullableFilter<"LinkMetricHistory"> | number | null
+  httpsResponseTime?: Prisma.FloatNullableFilter<"LinkMetricHistory"> | number | null
+  httpsSuccess?: Prisma.BoolNullableFilter<"LinkMetricHistory"> | boolean | null
   tcpResponseTime?: Prisma.FloatNullableFilter<"LinkMetricHistory"> | number | null
   tcpConnected?: Prisma.BoolNullableFilter<"LinkMetricHistory"> | boolean | null
   dnsResponseTime?: Prisma.FloatNullableFilter<"LinkMetricHistory"> | number | null
@@ -394,6 +426,9 @@ export type LinkMetricHistoryOrderByWithRelationInput = {
   httpStatusCode?: Prisma.SortOrderInput | Prisma.SortOrder
   httpResponseTime?: Prisma.SortOrderInput | Prisma.SortOrder
   httpSuccess?: Prisma.SortOrderInput | Prisma.SortOrder
+  httpsStatusCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  httpsResponseTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  httpsSuccess?: Prisma.SortOrderInput | Prisma.SortOrder
   tcpResponseTime?: Prisma.SortOrderInput | Prisma.SortOrder
   tcpConnected?: Prisma.SortOrderInput | Prisma.SortOrder
   dnsResponseTime?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -421,6 +456,9 @@ export type LinkMetricHistoryWhereUniqueInput = Prisma.AtLeast<{
   httpStatusCode?: Prisma.IntNullableFilter<"LinkMetricHistory"> | number | null
   httpResponseTime?: Prisma.FloatNullableFilter<"LinkMetricHistory"> | number | null
   httpSuccess?: Prisma.BoolNullableFilter<"LinkMetricHistory"> | boolean | null
+  httpsStatusCode?: Prisma.IntNullableFilter<"LinkMetricHistory"> | number | null
+  httpsResponseTime?: Prisma.FloatNullableFilter<"LinkMetricHistory"> | number | null
+  httpsSuccess?: Prisma.BoolNullableFilter<"LinkMetricHistory"> | boolean | null
   tcpResponseTime?: Prisma.FloatNullableFilter<"LinkMetricHistory"> | number | null
   tcpConnected?: Prisma.BoolNullableFilter<"LinkMetricHistory"> | boolean | null
   dnsResponseTime?: Prisma.FloatNullableFilter<"LinkMetricHistory"> | number | null
@@ -445,6 +483,9 @@ export type LinkMetricHistoryOrderByWithAggregationInput = {
   httpStatusCode?: Prisma.SortOrderInput | Prisma.SortOrder
   httpResponseTime?: Prisma.SortOrderInput | Prisma.SortOrder
   httpSuccess?: Prisma.SortOrderInput | Prisma.SortOrder
+  httpsStatusCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  httpsResponseTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  httpsSuccess?: Prisma.SortOrderInput | Prisma.SortOrder
   tcpResponseTime?: Prisma.SortOrderInput | Prisma.SortOrder
   tcpConnected?: Prisma.SortOrderInput | Prisma.SortOrder
   dnsResponseTime?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -476,6 +517,9 @@ export type LinkMetricHistoryScalarWhereWithAggregatesInput = {
   httpStatusCode?: Prisma.IntNullableWithAggregatesFilter<"LinkMetricHistory"> | number | null
   httpResponseTime?: Prisma.FloatNullableWithAggregatesFilter<"LinkMetricHistory"> | number | null
   httpSuccess?: Prisma.BoolNullableWithAggregatesFilter<"LinkMetricHistory"> | boolean | null
+  httpsStatusCode?: Prisma.IntNullableWithAggregatesFilter<"LinkMetricHistory"> | number | null
+  httpsResponseTime?: Prisma.FloatNullableWithAggregatesFilter<"LinkMetricHistory"> | number | null
+  httpsSuccess?: Prisma.BoolNullableWithAggregatesFilter<"LinkMetricHistory"> | boolean | null
   tcpResponseTime?: Prisma.FloatNullableWithAggregatesFilter<"LinkMetricHistory"> | number | null
   tcpConnected?: Prisma.BoolNullableWithAggregatesFilter<"LinkMetricHistory"> | boolean | null
   dnsResponseTime?: Prisma.FloatNullableWithAggregatesFilter<"LinkMetricHistory"> | number | null
@@ -497,6 +541,9 @@ export type LinkMetricHistoryCreateInput = {
   httpStatusCode?: number | null
   httpResponseTime?: number | null
   httpSuccess?: boolean | null
+  httpsStatusCode?: number | null
+  httpsResponseTime?: number | null
+  httpsSuccess?: boolean | null
   tcpResponseTime?: number | null
   tcpConnected?: boolean | null
   dnsResponseTime?: number | null
@@ -521,6 +568,9 @@ export type LinkMetricHistoryUncheckedCreateInput = {
   httpStatusCode?: number | null
   httpResponseTime?: number | null
   httpSuccess?: boolean | null
+  httpsStatusCode?: number | null
+  httpsResponseTime?: number | null
+  httpsSuccess?: boolean | null
   tcpResponseTime?: number | null
   tcpConnected?: boolean | null
   dnsResponseTime?: number | null
@@ -542,6 +592,9 @@ export type LinkMetricHistoryUpdateInput = {
   httpStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   httpResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   httpSuccess?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  httpsStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  httpsResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  httpsSuccess?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   tcpResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   tcpConnected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   dnsResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -566,6 +619,9 @@ export type LinkMetricHistoryUncheckedUpdateInput = {
   httpStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   httpResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   httpSuccess?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  httpsStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  httpsResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  httpsSuccess?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   tcpResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   tcpConnected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   dnsResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -589,6 +645,9 @@ export type LinkMetricHistoryCreateManyInput = {
   httpStatusCode?: number | null
   httpResponseTime?: number | null
   httpSuccess?: boolean | null
+  httpsStatusCode?: number | null
+  httpsResponseTime?: number | null
+  httpsSuccess?: boolean | null
   tcpResponseTime?: number | null
   tcpConnected?: boolean | null
   dnsResponseTime?: number | null
@@ -610,6 +669,9 @@ export type LinkMetricHistoryUpdateManyMutationInput = {
   httpStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   httpResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   httpSuccess?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  httpsStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  httpsResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  httpsSuccess?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   tcpResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   tcpConnected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   dnsResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -633,6 +695,9 @@ export type LinkMetricHistoryUncheckedUpdateManyInput = {
   httpStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   httpResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   httpSuccess?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  httpsStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  httpsResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  httpsSuccess?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   tcpResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   tcpConnected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   dnsResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -666,6 +731,9 @@ export type LinkMetricHistoryCountOrderByAggregateInput = {
   httpStatusCode?: Prisma.SortOrder
   httpResponseTime?: Prisma.SortOrder
   httpSuccess?: Prisma.SortOrder
+  httpsStatusCode?: Prisma.SortOrder
+  httpsResponseTime?: Prisma.SortOrder
+  httpsSuccess?: Prisma.SortOrder
   tcpResponseTime?: Prisma.SortOrder
   tcpConnected?: Prisma.SortOrder
   dnsResponseTime?: Prisma.SortOrder
@@ -685,6 +753,8 @@ export type LinkMetricHistoryAvgOrderByAggregateInput = {
   icmpPacketLoss?: Prisma.SortOrder
   httpStatusCode?: Prisma.SortOrder
   httpResponseTime?: Prisma.SortOrder
+  httpsStatusCode?: Prisma.SortOrder
+  httpsResponseTime?: Prisma.SortOrder
   tcpResponseTime?: Prisma.SortOrder
   dnsResponseTime?: Prisma.SortOrder
   downloadMbps?: Prisma.SortOrder
@@ -704,6 +774,9 @@ export type LinkMetricHistoryMaxOrderByAggregateInput = {
   httpStatusCode?: Prisma.SortOrder
   httpResponseTime?: Prisma.SortOrder
   httpSuccess?: Prisma.SortOrder
+  httpsStatusCode?: Prisma.SortOrder
+  httpsResponseTime?: Prisma.SortOrder
+  httpsSuccess?: Prisma.SortOrder
   tcpResponseTime?: Prisma.SortOrder
   tcpConnected?: Prisma.SortOrder
   dnsResponseTime?: Prisma.SortOrder
@@ -727,6 +800,9 @@ export type LinkMetricHistoryMinOrderByAggregateInput = {
   httpStatusCode?: Prisma.SortOrder
   httpResponseTime?: Prisma.SortOrder
   httpSuccess?: Prisma.SortOrder
+  httpsStatusCode?: Prisma.SortOrder
+  httpsResponseTime?: Prisma.SortOrder
+  httpsSuccess?: Prisma.SortOrder
   tcpResponseTime?: Prisma.SortOrder
   tcpConnected?: Prisma.SortOrder
   dnsResponseTime?: Prisma.SortOrder
@@ -746,6 +822,8 @@ export type LinkMetricHistorySumOrderByAggregateInput = {
   icmpPacketLoss?: Prisma.SortOrder
   httpStatusCode?: Prisma.SortOrder
   httpResponseTime?: Prisma.SortOrder
+  httpsStatusCode?: Prisma.SortOrder
+  httpsResponseTime?: Prisma.SortOrder
   tcpResponseTime?: Prisma.SortOrder
   dnsResponseTime?: Prisma.SortOrder
   downloadMbps?: Prisma.SortOrder
@@ -809,6 +887,9 @@ export type LinkMetricHistoryCreateWithoutLinkInput = {
   httpStatusCode?: number | null
   httpResponseTime?: number | null
   httpSuccess?: boolean | null
+  httpsStatusCode?: number | null
+  httpsResponseTime?: number | null
+  httpsSuccess?: boolean | null
   tcpResponseTime?: number | null
   tcpConnected?: boolean | null
   dnsResponseTime?: number | null
@@ -831,6 +912,9 @@ export type LinkMetricHistoryUncheckedCreateWithoutLinkInput = {
   httpStatusCode?: number | null
   httpResponseTime?: number | null
   httpSuccess?: boolean | null
+  httpsStatusCode?: number | null
+  httpsResponseTime?: number | null
+  httpsSuccess?: boolean | null
   tcpResponseTime?: number | null
   tcpConnected?: boolean | null
   dnsResponseTime?: number | null
@@ -883,6 +967,9 @@ export type LinkMetricHistoryScalarWhereInput = {
   httpStatusCode?: Prisma.IntNullableFilter<"LinkMetricHistory"> | number | null
   httpResponseTime?: Prisma.FloatNullableFilter<"LinkMetricHistory"> | number | null
   httpSuccess?: Prisma.BoolNullableFilter<"LinkMetricHistory"> | boolean | null
+  httpsStatusCode?: Prisma.IntNullableFilter<"LinkMetricHistory"> | number | null
+  httpsResponseTime?: Prisma.FloatNullableFilter<"LinkMetricHistory"> | number | null
+  httpsSuccess?: Prisma.BoolNullableFilter<"LinkMetricHistory"> | boolean | null
   tcpResponseTime?: Prisma.FloatNullableFilter<"LinkMetricHistory"> | number | null
   tcpConnected?: Prisma.BoolNullableFilter<"LinkMetricHistory"> | boolean | null
   dnsResponseTime?: Prisma.FloatNullableFilter<"LinkMetricHistory"> | number | null
@@ -905,6 +992,9 @@ export type LinkMetricHistoryCreateManyLinkInput = {
   httpStatusCode?: number | null
   httpResponseTime?: number | null
   httpSuccess?: boolean | null
+  httpsStatusCode?: number | null
+  httpsResponseTime?: number | null
+  httpsSuccess?: boolean | null
   tcpResponseTime?: number | null
   tcpConnected?: boolean | null
   dnsResponseTime?: number | null
@@ -926,6 +1016,9 @@ export type LinkMetricHistoryUpdateWithoutLinkInput = {
   httpStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   httpResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   httpSuccess?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  httpsStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  httpsResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  httpsSuccess?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   tcpResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   tcpConnected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   dnsResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -948,6 +1041,9 @@ export type LinkMetricHistoryUncheckedUpdateWithoutLinkInput = {
   httpStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   httpResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   httpSuccess?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  httpsStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  httpsResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  httpsSuccess?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   tcpResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   tcpConnected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   dnsResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -970,6 +1066,9 @@ export type LinkMetricHistoryUncheckedUpdateManyWithoutLinkInput = {
   httpStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   httpResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   httpSuccess?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  httpsStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  httpsResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  httpsSuccess?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   tcpResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   tcpConnected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   dnsResponseTime?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -995,6 +1094,9 @@ export type LinkMetricHistorySelect<ExtArgs extends runtime.Types.Extensions.Int
   httpStatusCode?: boolean
   httpResponseTime?: boolean
   httpSuccess?: boolean
+  httpsStatusCode?: boolean
+  httpsResponseTime?: boolean
+  httpsSuccess?: boolean
   tcpResponseTime?: boolean
   tcpConnected?: boolean
   dnsResponseTime?: boolean
@@ -1019,6 +1121,9 @@ export type LinkMetricHistorySelectCreateManyAndReturn<ExtArgs extends runtime.T
   httpStatusCode?: boolean
   httpResponseTime?: boolean
   httpSuccess?: boolean
+  httpsStatusCode?: boolean
+  httpsResponseTime?: boolean
+  httpsSuccess?: boolean
   tcpResponseTime?: boolean
   tcpConnected?: boolean
   dnsResponseTime?: boolean
@@ -1043,6 +1148,9 @@ export type LinkMetricHistorySelectUpdateManyAndReturn<ExtArgs extends runtime.T
   httpStatusCode?: boolean
   httpResponseTime?: boolean
   httpSuccess?: boolean
+  httpsStatusCode?: boolean
+  httpsResponseTime?: boolean
+  httpsSuccess?: boolean
   tcpResponseTime?: boolean
   tcpConnected?: boolean
   dnsResponseTime?: boolean
@@ -1067,6 +1175,9 @@ export type LinkMetricHistorySelectScalar = {
   httpStatusCode?: boolean
   httpResponseTime?: boolean
   httpSuccess?: boolean
+  httpsStatusCode?: boolean
+  httpsResponseTime?: boolean
+  httpsSuccess?: boolean
   tcpResponseTime?: boolean
   tcpConnected?: boolean
   dnsResponseTime?: boolean
@@ -1079,7 +1190,7 @@ export type LinkMetricHistorySelectScalar = {
   createdAt?: boolean
 }
 
-export type LinkMetricHistoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "linkId" | "timestamp" | "snmpMetrics" | "icmpLatency" | "icmpPacketLoss" | "icmpSuccess" | "httpStatusCode" | "httpResponseTime" | "httpSuccess" | "tcpResponseTime" | "tcpConnected" | "dnsResponseTime" | "dnsResult" | "dnsSuccess" | "downloadMbps" | "uploadMbps" | "downloadPercent" | "uploadPercent" | "createdAt", ExtArgs["result"]["linkMetricHistory"]>
+export type LinkMetricHistoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "linkId" | "timestamp" | "snmpMetrics" | "icmpLatency" | "icmpPacketLoss" | "icmpSuccess" | "httpStatusCode" | "httpResponseTime" | "httpSuccess" | "httpsStatusCode" | "httpsResponseTime" | "httpsSuccess" | "tcpResponseTime" | "tcpConnected" | "dnsResponseTime" | "dnsResult" | "dnsSuccess" | "downloadMbps" | "uploadMbps" | "downloadPercent" | "uploadPercent" | "createdAt", ExtArgs["result"]["linkMetricHistory"]>
 export type LinkMetricHistoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   link?: boolean | Prisma.LinksDefaultArgs<ExtArgs>
 }
@@ -1106,6 +1217,9 @@ export type $LinkMetricHistoryPayload<ExtArgs extends runtime.Types.Extensions.I
     httpStatusCode: number | null
     httpResponseTime: number | null
     httpSuccess: boolean | null
+    httpsStatusCode: number | null
+    httpsResponseTime: number | null
+    httpsSuccess: boolean | null
     tcpResponseTime: number | null
     tcpConnected: boolean | null
     dnsResponseTime: number | null
@@ -1550,6 +1664,9 @@ export interface LinkMetricHistoryFieldRefs {
   readonly httpStatusCode: Prisma.FieldRef<"LinkMetricHistory", 'Int'>
   readonly httpResponseTime: Prisma.FieldRef<"LinkMetricHistory", 'Float'>
   readonly httpSuccess: Prisma.FieldRef<"LinkMetricHistory", 'Boolean'>
+  readonly httpsStatusCode: Prisma.FieldRef<"LinkMetricHistory", 'Int'>
+  readonly httpsResponseTime: Prisma.FieldRef<"LinkMetricHistory", 'Float'>
+  readonly httpsSuccess: Prisma.FieldRef<"LinkMetricHistory", 'Boolean'>
   readonly tcpResponseTime: Prisma.FieldRef<"LinkMetricHistory", 'Float'>
   readonly tcpConnected: Prisma.FieldRef<"LinkMetricHistory", 'Boolean'>
   readonly dnsResponseTime: Prisma.FieldRef<"LinkMetricHistory", 'Float'>

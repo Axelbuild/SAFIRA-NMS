@@ -61,6 +61,7 @@ export type LinkStatusSnapshotMinAggregateOutputType = {
   snmpStatus: string | null
   icmpStatus: string | null
   httpStatus: string | null
+  httpsStatus: string | null
   tcpStatus: string | null
   dnsStatus: string | null
   latency: number | null
@@ -86,6 +87,7 @@ export type LinkStatusSnapshotMaxAggregateOutputType = {
   snmpStatus: string | null
   icmpStatus: string | null
   httpStatus: string | null
+  httpsStatus: string | null
   tcpStatus: string | null
   dnsStatus: string | null
   latency: number | null
@@ -111,6 +113,7 @@ export type LinkStatusSnapshotCountAggregateOutputType = {
   snmpStatus: number
   icmpStatus: number
   httpStatus: number
+  httpsStatus: number
   tcpStatus: number
   dnsStatus: number
   latency: number
@@ -162,6 +165,7 @@ export type LinkStatusSnapshotMinAggregateInputType = {
   snmpStatus?: true
   icmpStatus?: true
   httpStatus?: true
+  httpsStatus?: true
   tcpStatus?: true
   dnsStatus?: true
   latency?: true
@@ -187,6 +191,7 @@ export type LinkStatusSnapshotMaxAggregateInputType = {
   snmpStatus?: true
   icmpStatus?: true
   httpStatus?: true
+  httpsStatus?: true
   tcpStatus?: true
   dnsStatus?: true
   latency?: true
@@ -212,6 +217,7 @@ export type LinkStatusSnapshotCountAggregateInputType = {
   snmpStatus?: true
   icmpStatus?: true
   httpStatus?: true
+  httpsStatus?: true
   tcpStatus?: true
   dnsStatus?: true
   latency?: true
@@ -324,6 +330,7 @@ export type LinkStatusSnapshotGroupByOutputType = {
   snmpStatus: string | null
   icmpStatus: string | null
   httpStatus: string | null
+  httpsStatus: string | null
   tcpStatus: string | null
   dnsStatus: string | null
   latency: number | null
@@ -372,6 +379,7 @@ export type LinkStatusSnapshotWhereInput = {
   snmpStatus?: Prisma.StringNullableFilter<"LinkStatusSnapshot"> | string | null
   icmpStatus?: Prisma.StringNullableFilter<"LinkStatusSnapshot"> | string | null
   httpStatus?: Prisma.StringNullableFilter<"LinkStatusSnapshot"> | string | null
+  httpsStatus?: Prisma.StringNullableFilter<"LinkStatusSnapshot"> | string | null
   tcpStatus?: Prisma.StringNullableFilter<"LinkStatusSnapshot"> | string | null
   dnsStatus?: Prisma.StringNullableFilter<"LinkStatusSnapshot"> | string | null
   latency?: Prisma.FloatNullableFilter<"LinkStatusSnapshot"> | number | null
@@ -398,6 +406,7 @@ export type LinkStatusSnapshotOrderByWithRelationInput = {
   snmpStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   icmpStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   httpStatus?: Prisma.SortOrderInput | Prisma.SortOrder
+  httpsStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   tcpStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   dnsStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   latency?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -427,6 +436,7 @@ export type LinkStatusSnapshotWhereUniqueInput = Prisma.AtLeast<{
   snmpStatus?: Prisma.StringNullableFilter<"LinkStatusSnapshot"> | string | null
   icmpStatus?: Prisma.StringNullableFilter<"LinkStatusSnapshot"> | string | null
   httpStatus?: Prisma.StringNullableFilter<"LinkStatusSnapshot"> | string | null
+  httpsStatus?: Prisma.StringNullableFilter<"LinkStatusSnapshot"> | string | null
   tcpStatus?: Prisma.StringNullableFilter<"LinkStatusSnapshot"> | string | null
   dnsStatus?: Prisma.StringNullableFilter<"LinkStatusSnapshot"> | string | null
   latency?: Prisma.FloatNullableFilter<"LinkStatusSnapshot"> | number | null
@@ -453,6 +463,7 @@ export type LinkStatusSnapshotOrderByWithAggregationInput = {
   snmpStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   icmpStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   httpStatus?: Prisma.SortOrderInput | Prisma.SortOrder
+  httpsStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   tcpStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   dnsStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   latency?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -486,6 +497,7 @@ export type LinkStatusSnapshotScalarWhereWithAggregatesInput = {
   snmpStatus?: Prisma.StringNullableWithAggregatesFilter<"LinkStatusSnapshot"> | string | null
   icmpStatus?: Prisma.StringNullableWithAggregatesFilter<"LinkStatusSnapshot"> | string | null
   httpStatus?: Prisma.StringNullableWithAggregatesFilter<"LinkStatusSnapshot"> | string | null
+  httpsStatus?: Prisma.StringNullableWithAggregatesFilter<"LinkStatusSnapshot"> | string | null
   tcpStatus?: Prisma.StringNullableWithAggregatesFilter<"LinkStatusSnapshot"> | string | null
   dnsStatus?: Prisma.StringNullableWithAggregatesFilter<"LinkStatusSnapshot"> | string | null
   latency?: Prisma.FloatNullableWithAggregatesFilter<"LinkStatusSnapshot"> | number | null
@@ -509,6 +521,7 @@ export type LinkStatusSnapshotCreateInput = {
   snmpStatus?: string | null
   icmpStatus?: string | null
   httpStatus?: string | null
+  httpsStatus?: string | null
   tcpStatus?: string | null
   dnsStatus?: string | null
   latency?: number | null
@@ -535,6 +548,7 @@ export type LinkStatusSnapshotUncheckedCreateInput = {
   snmpStatus?: string | null
   icmpStatus?: string | null
   httpStatus?: string | null
+  httpsStatus?: string | null
   tcpStatus?: string | null
   dnsStatus?: string | null
   latency?: number | null
@@ -558,6 +572,7 @@ export type LinkStatusSnapshotUpdateInput = {
   snmpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   icmpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   httpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpsStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tcpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dnsStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latency?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -584,6 +599,7 @@ export type LinkStatusSnapshotUncheckedUpdateInput = {
   snmpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   icmpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   httpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpsStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tcpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dnsStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latency?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -609,6 +625,7 @@ export type LinkStatusSnapshotCreateManyInput = {
   snmpStatus?: string | null
   icmpStatus?: string | null
   httpStatus?: string | null
+  httpsStatus?: string | null
   tcpStatus?: string | null
   dnsStatus?: string | null
   latency?: number | null
@@ -632,6 +649,7 @@ export type LinkStatusSnapshotUpdateManyMutationInput = {
   snmpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   icmpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   httpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpsStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tcpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dnsStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latency?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -657,6 +675,7 @@ export type LinkStatusSnapshotUncheckedUpdateManyInput = {
   snmpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   icmpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   httpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpsStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tcpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dnsStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latency?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -692,6 +711,7 @@ export type LinkStatusSnapshotCountOrderByAggregateInput = {
   snmpStatus?: Prisma.SortOrder
   icmpStatus?: Prisma.SortOrder
   httpStatus?: Prisma.SortOrder
+  httpsStatus?: Prisma.SortOrder
   tcpStatus?: Prisma.SortOrder
   dnsStatus?: Prisma.SortOrder
   latency?: Prisma.SortOrder
@@ -729,6 +749,7 @@ export type LinkStatusSnapshotMaxOrderByAggregateInput = {
   snmpStatus?: Prisma.SortOrder
   icmpStatus?: Prisma.SortOrder
   httpStatus?: Prisma.SortOrder
+  httpsStatus?: Prisma.SortOrder
   tcpStatus?: Prisma.SortOrder
   dnsStatus?: Prisma.SortOrder
   latency?: Prisma.SortOrder
@@ -754,6 +775,7 @@ export type LinkStatusSnapshotMinOrderByAggregateInput = {
   snmpStatus?: Prisma.SortOrder
   icmpStatus?: Prisma.SortOrder
   httpStatus?: Prisma.SortOrder
+  httpsStatus?: Prisma.SortOrder
   tcpStatus?: Prisma.SortOrder
   dnsStatus?: Prisma.SortOrder
   latency?: Prisma.SortOrder
@@ -831,6 +853,7 @@ export type LinkStatusSnapshotCreateWithoutLinkInput = {
   snmpStatus?: string | null
   icmpStatus?: string | null
   httpStatus?: string | null
+  httpsStatus?: string | null
   tcpStatus?: string | null
   dnsStatus?: string | null
   latency?: number | null
@@ -855,6 +878,7 @@ export type LinkStatusSnapshotUncheckedCreateWithoutLinkInput = {
   snmpStatus?: string | null
   icmpStatus?: string | null
   httpStatus?: string | null
+  httpsStatus?: string | null
   tcpStatus?: string | null
   dnsStatus?: string | null
   latency?: number | null
@@ -909,6 +933,7 @@ export type LinkStatusSnapshotScalarWhereInput = {
   snmpStatus?: Prisma.StringNullableFilter<"LinkStatusSnapshot"> | string | null
   icmpStatus?: Prisma.StringNullableFilter<"LinkStatusSnapshot"> | string | null
   httpStatus?: Prisma.StringNullableFilter<"LinkStatusSnapshot"> | string | null
+  httpsStatus?: Prisma.StringNullableFilter<"LinkStatusSnapshot"> | string | null
   tcpStatus?: Prisma.StringNullableFilter<"LinkStatusSnapshot"> | string | null
   dnsStatus?: Prisma.StringNullableFilter<"LinkStatusSnapshot"> | string | null
   latency?: Prisma.FloatNullableFilter<"LinkStatusSnapshot"> | number | null
@@ -933,6 +958,7 @@ export type LinkStatusSnapshotCreateManyLinkInput = {
   snmpStatus?: string | null
   icmpStatus?: string | null
   httpStatus?: string | null
+  httpsStatus?: string | null
   tcpStatus?: string | null
   dnsStatus?: string | null
   latency?: number | null
@@ -956,6 +982,7 @@ export type LinkStatusSnapshotUpdateWithoutLinkInput = {
   snmpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   icmpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   httpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpsStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tcpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dnsStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latency?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -980,6 +1007,7 @@ export type LinkStatusSnapshotUncheckedUpdateWithoutLinkInput = {
   snmpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   icmpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   httpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpsStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tcpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dnsStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latency?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1004,6 +1032,7 @@ export type LinkStatusSnapshotUncheckedUpdateManyWithoutLinkInput = {
   snmpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   icmpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   httpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpsStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tcpStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dnsStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latency?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1031,6 +1060,7 @@ export type LinkStatusSnapshotSelect<ExtArgs extends runtime.Types.Extensions.In
   snmpStatus?: boolean
   icmpStatus?: boolean
   httpStatus?: boolean
+  httpsStatus?: boolean
   tcpStatus?: boolean
   dnsStatus?: boolean
   latency?: boolean
@@ -1057,6 +1087,7 @@ export type LinkStatusSnapshotSelectCreateManyAndReturn<ExtArgs extends runtime.
   snmpStatus?: boolean
   icmpStatus?: boolean
   httpStatus?: boolean
+  httpsStatus?: boolean
   tcpStatus?: boolean
   dnsStatus?: boolean
   latency?: boolean
@@ -1083,6 +1114,7 @@ export type LinkStatusSnapshotSelectUpdateManyAndReturn<ExtArgs extends runtime.
   snmpStatus?: boolean
   icmpStatus?: boolean
   httpStatus?: boolean
+  httpsStatus?: boolean
   tcpStatus?: boolean
   dnsStatus?: boolean
   latency?: boolean
@@ -1109,6 +1141,7 @@ export type LinkStatusSnapshotSelectScalar = {
   snmpStatus?: boolean
   icmpStatus?: boolean
   httpStatus?: boolean
+  httpsStatus?: boolean
   tcpStatus?: boolean
   dnsStatus?: boolean
   latency?: boolean
@@ -1123,7 +1156,7 @@ export type LinkStatusSnapshotSelectScalar = {
   updatedAt?: boolean
 }
 
-export type LinkStatusSnapshotOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "linkId" | "online" | "status" | "overallStatus" | "consecutiveFailures" | "lastSeenOnlineAt" | "snmpStatus" | "icmpStatus" | "httpStatus" | "tcpStatus" | "dnsStatus" | "latency" | "packetLoss" | "downloadMbps" | "uploadMbps" | "downloadPercent" | "uploadPercent" | "interfaceOperStatus" | "interfaceSpeed" | "createdAt" | "updatedAt", ExtArgs["result"]["linkStatusSnapshot"]>
+export type LinkStatusSnapshotOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "linkId" | "online" | "status" | "overallStatus" | "consecutiveFailures" | "lastSeenOnlineAt" | "snmpStatus" | "icmpStatus" | "httpStatus" | "httpsStatus" | "tcpStatus" | "dnsStatus" | "latency" | "packetLoss" | "downloadMbps" | "uploadMbps" | "downloadPercent" | "uploadPercent" | "interfaceOperStatus" | "interfaceSpeed" | "createdAt" | "updatedAt", ExtArgs["result"]["linkStatusSnapshot"]>
 export type LinkStatusSnapshotInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   link?: boolean | Prisma.LinksDefaultArgs<ExtArgs>
 }
@@ -1150,6 +1183,7 @@ export type $LinkStatusSnapshotPayload<ExtArgs extends runtime.Types.Extensions.
     snmpStatus: string | null
     icmpStatus: string | null
     httpStatus: string | null
+    httpsStatus: string | null
     tcpStatus: string | null
     dnsStatus: string | null
     latency: number | null
@@ -1596,6 +1630,7 @@ export interface LinkStatusSnapshotFieldRefs {
   readonly snmpStatus: Prisma.FieldRef<"LinkStatusSnapshot", 'String'>
   readonly icmpStatus: Prisma.FieldRef<"LinkStatusSnapshot", 'String'>
   readonly httpStatus: Prisma.FieldRef<"LinkStatusSnapshot", 'String'>
+  readonly httpsStatus: Prisma.FieldRef<"LinkStatusSnapshot", 'String'>
   readonly tcpStatus: Prisma.FieldRef<"LinkStatusSnapshot", 'String'>
   readonly dnsStatus: Prisma.FieldRef<"LinkStatusSnapshot", 'String'>
   readonly latency: Prisma.FieldRef<"LinkStatusSnapshot", 'Float'>

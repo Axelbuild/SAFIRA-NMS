@@ -22,6 +22,8 @@ export async function linkRoutes(app: FastifyInstance) {
 
   app.get("/links/:id/monitors", LinkController.getMonitors);
 
+  app.patch("/links/monitors/:monitorId", LinkController.updateMonitor);
+
   app.delete("/links/monitors/:monitorId", LinkController.deleteMonitor);
 
   // ===== STATUS & METRICS =====

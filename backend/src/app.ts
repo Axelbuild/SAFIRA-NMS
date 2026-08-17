@@ -15,7 +15,7 @@ await fastify.register(cors, {
   origin: process.env.FRONTEND_URL
   ? [process.env.FRONTEND_URL]
   : true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
 });
 
@@ -23,6 +23,9 @@ fastify.register(printerRoutes);
 fastify.register(serverRoutes);
 fastify.register(groupRoutes);
 fastify.register(linkRoutes);
+
+// Execute once on startup; checkLinks prevents overlapping executions.
+void checkLinks();
 
 setInterval(async () => {
   try {

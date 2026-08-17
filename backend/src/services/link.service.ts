@@ -3,6 +3,7 @@ import { LinkModel, LinkMonitorModel } from "../models/link.models";
 import { isValidNumber } from "../utils/validators";
 import { isValidIP } from "../utils/ip";
 import { LinkInput, LinkMonitorInput, LinkMonitorType, LinkMonitorOutput } from "../types/link";
+import { mapLinkMonitorResponse, mapLinkMonitorsResponse } from "../serializers/link-monitor.serializer";
 
 function cleanString(value?: string | null) {
   if (!value) return null;
@@ -10,6 +11,37 @@ function cleanString(value?: string | null) {
   const cleaned = value.replace(/\u0000/g, "").replace(/\0/g, "").trim();
 
   return cleaned.length > 0 ? cleaned : null;
+}
+
+function assertPositiveMilliseconds(value: unknown, field: string) {
+  if (value !== undefined && (!Number.isFinite(value) || Number(value) <= 0)) {
+    throw new Error(`${field} must be a positive number in milliseconds`);
+  }
+}
+
+function validateMonitorConfig(monitorType: LinkMonitorType, config: Record<string, unknown>) {
+  if (monitorType === "ICMP") {
+    if (typeof config.target !== "string" || !config.target.trim()) throw new Error("ICMP config.target is required");
+    assertPositiveMilliseconds(config.timeout, "ICMP config.timeout");
+    assertPositiveMilliseconds(config.latencyThresholdMs, "ICMP config.latencyThresholdMs");
+  } else if (monitorType === "SNMP") {
+    if (typeof config.ip !== "string" || !config.ip.trim() || !Number.isInteger(config.interfaceIndex)) throw new Error("SNMP config.ip and config.interfaceIndex are required");
+    assertPositiveMilliseconds(config.timeout, "SNMP config.timeout");
+  } else if (monitorType === "HTTP" || monitorType === "HTTPS") {
+    if (typeof config.url !== "string") throw new Error(`${monitorType} config.url is required`);
+    const url = new URL(config.url);
+    if (url.protocol !== `${monitorType.toLowerCase()}:`) throw new Error(`${monitorType} config.url must use ${monitorType.toLowerCase()}://`);
+    assertPositiveMilliseconds(config.timeout, `${monitorType} config.timeout`);
+    assertPositiveMilliseconds(config.responseTimeThresholdMs, `${monitorType} config.responseTimeThresholdMs`);
+  } else if (monitorType === "TCP") {
+    if (typeof config.host !== "string" || !config.host.trim() || !Number.isInteger(config.port) || Number(config.port) < 1 || Number(config.port) > 65535) throw new Error("TCP config.host and a port between 1 and 65535 are required");
+    assertPositiveMilliseconds(config.timeout, "TCP config.timeout");
+    assertPositiveMilliseconds(config.responseTimeThresholdMs, "TCP config.responseTimeThresholdMs");
+  } else {
+    if (typeof config.dnsServer !== "string" || typeof config.query !== "string" || !config.dnsServer.trim() || !config.query.trim()) throw new Error("DNS config.dnsServer and config.query are required");
+    assertPositiveMilliseconds(config.timeout, "DNS config.timeout");
+    assertPositiveMilliseconds(config.responseTimeThresholdMs, "DNS config.responseTimeThresholdMs");
+  }
 }
 
 export class LinkService {
@@ -47,7 +79,7 @@ export class LinkService {
   async findAll(enabled?: boolean) {
     const where = enabled !== undefined ? { enabled } : {};
 
-    return prisma.links.findMany({
+    const links = await prisma.links.findMany({
       where,
       include: {
         group: true,
@@ -55,10 +87,11 @@ export class LinkService {
         snapshots: { take: 1, orderBy: { createdAt: "desc" } },
       },
     });
+    return links.map(mapLinkMonitorsResponse);
   }
 
   async findById(id: number) {
-    return prisma.links.findUnique({
+    const link = await prisma.links.findUnique({
       where: { id },
       include: {
         group: true,
@@ -67,10 +100,11 @@ export class LinkService {
         alerts: true,
       },
     });
+    return link ? mapLinkMonitorsResponse(link) : null;
   }
 
   async findByGroupId(groupId: number) {
-    return prisma.links.findMany({
+    const links = await prisma.links.findMany({
       where: { groupId },
       include: {
         group: true,
@@ -78,6 +112,7 @@ export class LinkService {
         snapshots: { take: 1, orderBy: { createdAt: "desc" } },
       },
     });
+    return links.map(mapLinkMonitorsResponse);
   }
 
   async update(id: number, data: Partial<LinkInput>) {
@@ -138,9 +173,11 @@ export class LinkService {
       throw new Error("config must be an object");
     }
 
+    validateMonitorConfig(monitorType, config as Record<string, unknown>);
+
     const monitor = new LinkMonitorModel(linkId, monitorType, config, enabled !== false);
 
-    return prisma.linkMonitor.create({
+    const created = await prisma.linkMonitor.create({
       data: {
         linkId: monitor.linkId,
         monitorType: monitor.monitorType,
@@ -148,6 +185,7 @@ export class LinkService {
         config: JSON.stringify(monitor.config),
       },
     });
+    return mapLinkMonitorResponse(created);
   }
 
   async getMonitors(linkId: number): Promise<LinkMonitorOutput[]> {
@@ -155,11 +193,7 @@ export class LinkService {
       where: { linkId },
     });
 
-    // Parse config JSON
-    return monitors.map((m) => ({
-      ...m,
-      config: JSON.parse(m.config),
-    })) as LinkMonitorOutput[];
+    return monitors.map(mapLinkMonitorResponse);
   }
 
   async getMonitorById(id: number): Promise<LinkMonitorOutput | null> {
@@ -169,10 +203,7 @@ export class LinkService {
 
     if (!monitor) return null;
 
-    return {
-      ...monitor,
-      config: JSON.parse(monitor.config),
-    } as LinkMonitorOutput;
+    return mapLinkMonitorResponse(monitor);
   }
 
   async updateMonitor(id: number, data: Partial<LinkMonitorInput>): Promise<LinkMonitorOutput> {
@@ -182,16 +213,16 @@ export class LinkService {
 
     if (!monitor) throw new Error("Monitor not found");
 
-    return prisma.linkMonitor.update({
+    if (data.config) validateMonitorConfig(monitor.monitorType as LinkMonitorType, data.config as Record<string, unknown>);
+
+    const updated = await prisma.linkMonitor.update({
       where: { id },
       data: {
         enabled: data.enabled !== undefined ? data.enabled : undefined,
         config: data.config ? JSON.stringify(data.config) : undefined,
       },
-    }).then((m) => ({
-      ...m,
-      config: JSON.parse(m.config),
-    })) as Promise<LinkMonitorOutput>;
+    });
+    return mapLinkMonitorResponse(updated);
   }
 
   async deleteMonitor(id: number) {

@@ -198,6 +198,7 @@ model LinkStatusSnapshot {
   snmpStatus          String?
   icmpStatus          String?
   httpStatus          String?
+  httpsStatus         String?
   tcpStatus           String?
   dnsStatus           String?
   
@@ -256,6 +257,9 @@ model LinkMetricHistory {
   httpStatusCode      Int?
   httpResponseTime    Float?   // em ms
   httpSuccess         Boolean?
+  httpsStatusCode     Int?
+  httpsResponseTime   Float?   // em ms
+  httpsSuccess        Boolean?
   
   // Métricas TCP
   tcpResponseTime     Float?   // em ms

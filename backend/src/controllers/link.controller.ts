@@ -1,7 +1,8 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { LinkService } from "../services/link.service";
-import { LinkInput, LinkMonitorInput, LinkTestRequest, LinkTestResult, LinkMonitorOutput } from "../types/link";
+import { ICMPMonitorConfig, LinkInput, LinkMonitorConfig, LinkMonitorInput, LinkTestRequest, LinkTestResult, LinkMonitorOutput } from "../types/link";
 import { ICMPMonitor } from "../services/links/icmp.monitor";
+import { runProtocolMonitor } from "../services/links/protocol.monitors";
 
 const linkService = new LinkService();
 const icmpMonitor = new ICMPMonitor();
@@ -231,6 +232,19 @@ export class LinkController {
     }
   }
 
+  /** PATCH /links/monitors/:monitorId - Atualizar configuração de monitor */
+  static async updateMonitor(request: FastifyRequest, reply: FastifyReply) {
+    try {
+      const { monitorId } = request.params as { monitorId: string };
+      const id = Number.parseInt(monitorId, 10);
+      if (Number.isNaN(id)) return reply.code(400).send({ success: false, error: "Invalid monitor ID" });
+      const monitor = await linkService.updateMonitor(id, request.body as Partial<LinkMonitorInput>);
+      return reply.code(200).send({ success: true, data: monitor });
+    } catch (error: any) {
+      return reply.code(400).send({ success: false, error: error.message });
+    }
+  }
+
   /**
    * DELETE /links/monitors/:monitorId - Deletar monitor
    */
@@ -377,23 +391,36 @@ export class LinkController {
           monitorType: monitor.monitorType,
           status: "ERROR",
           timestamp: new Date(),
-          error: "Monitor not yet implemented",
         };
 
         // Por enquanto, só implementamos ICMP
-        if (monitor.monitorType === "ICMP") {
+        if (monitor.monitorType === "ICMP" && monitor.config !== null) {
           try {
-            const config = monitor.config;
+            const config = monitor.config as ICMPMonitorConfig;
             const target = config.target || "8.8.8.8"; // Default para teste
             const metrics = await icmpMonitor.monitor(target, config.count || 4, config.timeout || 3000);
 
             testResult.status = metrics.success ? "SUCCESS" : "ERROR";
-            testResult.latency = metrics.latency;
+            if (metrics.latency != null) testResult.latency = metrics.latency;
             testResult.metrics = metrics;
           } catch (err: any) {
             testResult.error = err.message;
           }
         }
+
+        if (monitor.monitorType !== "ICMP" && monitor.config !== null) {
+          try {
+            const result = await runProtocolMonitor(monitor.monitorType, monitor.config as LinkMonitorConfig);
+            testResult.status = result.status === "OFFLINE" ? "ERROR" : "SUCCESS";
+            testResult.metrics = result.metrics;
+            if (typeof result.metrics.latency === "number") testResult.latency = result.metrics.latency;
+            if (typeof result.metrics.responseTime === "number") testResult.responseTime = result.metrics.responseTime;
+          } catch (error: any) {
+            testResult.error = error.message;
+          }
+        }
+
+        if (monitor.config === null) testResult.error = "Monitor configuration is invalid";
 
         results.push(testResult);
       }

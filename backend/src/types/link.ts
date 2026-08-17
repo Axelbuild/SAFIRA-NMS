@@ -4,6 +4,9 @@ export type LinkMonitorType = "SNMP" | "ICMP" | "HTTP" | "HTTPS" | "TCP" | "DNS"
 
 export type LinkStatus = "ONLINE" | "SUSPECT" | "OFFLINE" | "UNKNOWN";
 
+/** Numeric duration or latency. The unit is always milliseconds (ms). */
+export type Milliseconds = number;
+
 export type LinkAlertType =
   | "AVAILABILITY"
   | "LATENCY"
@@ -18,6 +21,9 @@ export type LinkAlertType =
 export type SNMPMonitorConfig = {
   ip: string;
   community?: string; // default: "public"
+  port?: number;
+  timeout?: Milliseconds;
+  retries?: number;
   interfaceIndex?: number; // ifIndex para a interface WAN
   interfaceOid?: string; // OID específico se preferir usar OID direto
   checkCounters64?: boolean; // usar ifHCInOctets/ifHCOutOctets
@@ -26,14 +32,16 @@ export type SNMPMonitorConfig = {
 export type ICMPMonitorConfig = {
   target: string; // IP ou hostname
   count?: number; // número de pings (default: 4)
-  timeout?: number; // timeout em ms (default: 3000)
-  interval?: number; // intervalo entre pings em ms
+  timeout?: Milliseconds; // timeout em ms (default: 3000)
+  interval?: Milliseconds; // intervalo entre pings em ms
+  latencyThresholdMs?: Milliseconds; // threshold de latência, sempre em ms
 };
 
 export type HTTPMonitorConfig = {
   url: string;
   method?: "GET" | "POST"; // default: GET
-  timeout?: number; // timeout em ms (default: 5000)
+  timeout?: Milliseconds; // timeout em ms (default: 5000)
+  responseTimeThresholdMs?: Milliseconds; // threshold, sempre em ms
   expectedStatus?: number; // status esperado (default: 200)
   followRedirects?: boolean; // seguir redirects (default: false)
   headers?: Record<string, string>; // headers customizados
@@ -42,14 +50,16 @@ export type HTTPMonitorConfig = {
 export type TCPMonitorConfig = {
   host: string; // hostname ou IP
   port: number;
-  timeout?: number; // timeout em ms (default: 3000)
+  timeout?: Milliseconds; // timeout em ms (default: 3000)
+  responseTimeThresholdMs?: Milliseconds; // threshold, sempre em ms
 };
 
 export type DNSMonitorConfig = {
   dnsServer: string; // IP do servidor DNS
   query: string; // domínio a consultar
   recordType?: "A" | "AAAA" | "MX" | "NS" | "CNAME"; // default: A
-  timeout?: number; // timeout em ms (default: 5000)
+  timeout?: Milliseconds; // timeout em ms (default: 5000)
+  responseTimeThresholdMs?: Milliseconds; // threshold, sempre em ms
 };
 
 export type LinkMonitorConfig =
@@ -76,22 +86,23 @@ export type SNMPMetrics = {
 };
 
 export type ICMPMetrics = {
-  latency: number; // em ms
+  latency: Milliseconds | null; // sempre em ms; null somente se não interpretável
   packetLoss: number; // em percentual (0-100)
   success: boolean;
+  interpretable?: boolean;
   target: string;
 };
 
 export type HTTPMetrics = {
   statusCode: number;
-  responseTime: number; // em ms
+  responseTime: Milliseconds; // sempre em ms
   success: boolean;
   url: string;
   error?: string;
 };
 
 export type TCPMetrics = {
-  responseTime: number; // em ms
+  responseTime: Milliseconds; // sempre em ms
   connected: boolean;
   host: string;
   port: number;
@@ -99,7 +110,7 @@ export type TCPMetrics = {
 };
 
 export type DNSMetrics = {
-  responseTime: number; // em ms
+  responseTime: Milliseconds; // sempre em ms
   result?: string; // IP resultante ou CNAME, etc
   success: boolean;
   query: string;
@@ -114,10 +125,11 @@ export type LinkMetrics = {
   snmp?: SNMPMetrics;
   icmp?: ICMPMetrics;
   http?: HTTPMetrics;
+  https?: HTTPMetrics;
   tcp?: TCPMetrics;
   dns?: DNSMetrics;
   // Consolidados
-  latency?: number;
+  latency?: Milliseconds; // sempre em ms
   packetLoss?: number;
   downloadMbps?: number;
   uploadMbps?: number;
@@ -147,7 +159,7 @@ export type LinkMonitorOutput = {
   linkId: number;
   monitorType: LinkMonitorType;
   enabled: boolean;
-  config: Record<string, any>; // Parsed from JSON
+  config: LinkMonitorConfig | null; // JSON público desserializado; null se legado inválido
   lastCheck: Date | null;
   nextCheck: Date | null;
   createdAt: Date;
@@ -161,7 +173,8 @@ export type LinkTestRequest = {
 export type LinkTestResult = {
   monitorType: LinkMonitorType;
   status: "SUCCESS" | "ERROR" | "TIMEOUT";
-  latency?: number;
+  latency?: Milliseconds; // sempre em ms
+  responseTime?: Milliseconds; // sempre em ms
   error?: string;
   metrics?: any;
   timestamp: Date;
