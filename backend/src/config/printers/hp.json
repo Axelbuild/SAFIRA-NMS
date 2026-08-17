@@ -1,0 +1,60 @@
+{
+  "base_oid": "1.3.6.1.2.1.43.11.1.1",
+  "models": {
+    "HP E57540DN": {
+      "type": "color",
+      "toners": {
+        "black": {
+          "index": 1,
+          "max_oid": ".8.1.1",
+          "current_oid": ".9.1.1"
+        },
+        "cyan": {
+          "index": 2,
+          "max_oid": ".8.1.2",
+          "current_oid": ".9.1.2"
+        },
+        "magenta": {
+          "index": 3,
+          "max_oid": ".8.1.3",
+          "current_oid": ".9.1.3"
+        },
+        "yellow": {
+          "index": 4,
+          "max_oid": ".8.1.4",
+          "current_oid": ".9.1.4"
+        }
+      }
+    },
+    "HP PRO4103FDW": {
+      "type": "mono",
+      "toners": {
+        "black": {
+          "index": 1,
+          "max_oid": ".8.1.1",
+          "current_oid": ".9.1.1"
+        }
+      }
+    },
+    "HP M428FDW": {
+      "type": "mono",
+      "toners": {
+        "black": {
+          "index": 1,
+          "max_oid": ".8.1.1",
+          "current_oid": ".9.1.1"
+        }
+      }
+    },
+    "HP M432FDN": {
+      "type": "mono",
+      "toners": {
+        "black": {
+          "index": 1,
+          "max_oid": ".8.1.1",
+          "current_oid": ".9.1.1"
+        }
+      }
+    }
+  }
+}

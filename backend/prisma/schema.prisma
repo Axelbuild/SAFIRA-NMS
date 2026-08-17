@@ -1,0 +1,289 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Printers {
+  id                    Int      @id @default(autoincrement())
+  name                  String
+  ip                    String   @unique
+  serialNumber          String?
+  serialAlertSent       Boolean  @default(false)
+  lastRecoveryAttemptAt DateTime?
+  recoveryAttempts      Int      @default(0)
+  brand                 String
+  model                 String
+  groupId               Int
+  createdAt             DateTime @default(now())
+
+  group     Group                   @relation(fields: [groupId], references: [id])
+  ipHistory PrinterIpHistory[]
+  alerts    PrinterAlertState[]
+  snapshots PrinterStatusSnapshot[]
+}
+
+model PrinterIpHistory {
+  id           Int      @id @default(autoincrement())
+  printerId    Int
+  oldIp        String
+  newIp        String
+  serialNumber String
+  createdAt    DateTime @default(now())
+
+  printer Printers @relation(fields: [printerId], references: [id])
+}
+
+
+model PrinterAlertState {
+  id                Int       @id @default(autoincrement())
+  printerId         Int
+  color             String
+  warnedAt10        Boolean   @default(false)
+  lastCriticalLevel Int?
+  currentLevel      Int?
+  lastNotifiedAt    DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  printer Printers @relation(fields: [printerId], references: [id])
+
+  @@unique([printerId, color])
+}
+
+model PrinterStatusSnapshot {
+  id                  Int      @id @default(autoincrement())
+  printerId           Int      @unique
+  online              Boolean
+  status              String   @default("UNKNOWN")
+  consecutiveFailures Int      @default(0)
+  lastSeenOnlineAt    DateTime?
+  black               Int?
+  cyan                Int?
+  magenta             Int?
+  yellow              Int?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  printer Printers @relation(fields: [printerId], references: [id])
+}
+
+// ===== SERVER MODELS =====
+
+model Servers {
+  id                    Int      @id @default(autoincrement())
+  name                  String
+  ip                    String   @unique
+  osType                String   // "LINUX" | "WINDOWS"
+  hostname              String?
+  lastRecoveryAttemptAt DateTime?
+  recoveryAttempts      Int      @default(0)
+  groupId               Int
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  group       Group                      @relation(fields: [groupId], references: [id])
+  ipHistory   ServerIpHistory[]
+  alerts      ServerAlertState[]
+  snapshots   ServerMetricsSnapshot[]
+}
+
+model ServerIpHistory {
+  id        Int      @id @default(autoincrement())
+  serverId  Int
+  oldIp     String
+  newIp     String
+  hostname  String?
+  createdAt DateTime @default(now())
+
+  server Servers @relation(fields: [serverId], references: [id])
+}
+
+model ServerAlertState {
+  id                Int       @id @default(autoincrement())
+  serverId          Int
+  alertType         String    // "CPU" | "MEMORY" | "DISK" | "NETWORK"
+  metric            String    // nome da métrica específica
+  warnedAtThreshold Boolean   @default(false)
+  lastCriticalLevel Float?
+  currentLevel      Float?
+  threshold         Float?
+  lastNotifiedAt    DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  server Servers @relation(fields: [serverId], references: [id])
+
+  @@unique([serverId, alertType, metric])
+}
+
+model ServerMetricsSnapshot {
+  id                  Int      @id @default(autoincrement())
+  serverId            Int      @unique
+  online              Boolean
+  status              String   @default("UNKNOWN")
+  consecutiveFailures Int      @default(0)
+  lastSeenOnlineAt    DateTime?
+  
+  // CPU Metrics
+  cpuUsage            Float?   // Porcentagem
+  cpuCores            Int?
+  
+  // Memory Metrics
+  memoryTotal         Float?   // em MB
+  memoryUsed          Float?   // em MB
+  memoryFree          Float?   // em MB
+  memoryUsagePercent  Float?   // Porcentagem
+  
+  // Disk Metrics (pode ter multiplos discos, armazenar em JSON)
+  diskMetrics         String?  // JSON com array de discos
+  
+  // Network Interfaces (armazenar em JSON)
+  networkInterfaces   String?  // JSON com array de interfaces
+  
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  server Servers @relation(fields: [serverId], references: [id])
+}
+
+// ===== LINK MONITORING MODELS =====
+
+model Links {
+  id                    Int      @id @default(autoincrement())
+  name                  String
+  description           String?
+  enabled               Boolean  @default(true)
+  capacity              Float    // em Mbps
+  groupId               Int
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  group       Group                      @relation(fields: [groupId], references: [id])
+  monitors    LinkMonitor[]
+  alerts      LinkAlertState[]
+  snapshots   LinkStatusSnapshot[]
+  metrics     LinkMetricHistory[]
+}
+
+model LinkMonitor {
+  id            Int      @id @default(autoincrement())
+  linkId        Int
+  monitorType   String   // "SNMP" | "ICMP" | "HTTP" | "HTTPS" | "TCP" | "DNS"
+  enabled       Boolean  @default(true)
+  config        String   // JSON com configuração específica do monitor
+  lastCheck     DateTime?
+  nextCheck     DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  link Links @relation(fields: [linkId], references: [id], onDelete: Cascade)
+
+  @@unique([linkId, monitorType])
+}
+
+model LinkStatusSnapshot {
+  id                  Int      @id @default(autoincrement())
+  linkId              Int      @unique
+  online              Boolean
+  status              String   @default("UNKNOWN") // "ONLINE" | "SUSPECT" | "OFFLINE"
+  overallStatus       String   @default("UNKNOWN") // Status consolidado de todos os monitores
+  consecutiveFailures Int      @default(0)
+  lastSeenOnlineAt    DateTime?
+  
+  // Status individual de cada monitor
+  snmpStatus          String?
+  icmpStatus          String?
+  httpStatus          String?
+  tcpStatus           String?
+  dnsStatus           String?
+  
+  // Métricas de latência e performance
+  latency             Float?   // em ms
+  packetLoss          Float?   // em percentual
+  
+  // Métricas de tráfego (SNMP)
+  downloadMbps        Float?   // Mbps atual
+  uploadMbps          Float?   // Mbps atual
+  downloadPercent     Float?   // Percentual de utilização
+  uploadPercent       Float?   // Percentual de utilização
+  
+  // Informações de interface (SNMP)
+  interfaceOperStatus String?  // UP | DOWN
+  interfaceSpeed      String?  // Velocidade da interface
+  
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  link Links @relation(fields: [linkId], references: [id], onDelete: Cascade)
+}
+
+model LinkAlertState {
+  id                Int       @id @default(autoincrement())
+  linkId            Int
+  alertType         String    // "AVAILABILITY" | "LATENCY" | "PACKETLOSS" | "UTILIZATION" | "INTERFACE" | "HTTP" | "DNS"
+  monitorType       String    // Qual monitor disparou o alerta
+  warnedAtThreshold Boolean   @default(false)
+  lastCriticalLevel Float?
+  currentLevel      Float?
+  threshold         Float?
+  lastNotifiedAt    DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  link Links @relation(fields: [linkId], references: [id], onDelete: Cascade)
+
+  @@unique([linkId, alertType, monitorType])
+}
+
+model LinkMetricHistory {
+  id                  Int      @id @default(autoincrement())
+  linkId              Int
+  timestamp           DateTime @default(now())
+  
+  // Métricas SNMP (em JSON para flexibilidade)
+  snmpMetrics         String?  // {ifOperStatus, ifSpeed, ifInOctets, ifOutOctets, ifInErrors, ifOutErrors, ifInDiscards, ifOutDiscards}
+  
+  // Métricas ICMP
+  icmpLatency         Float?   // em ms
+  icmpPacketLoss      Float?   // em percentual
+  icmpSuccess         Boolean?
+  
+  // Métricas HTTP/HTTPS
+  httpStatusCode      Int?
+  httpResponseTime    Float?   // em ms
+  httpSuccess         Boolean?
+  
+  // Métricas TCP
+  tcpResponseTime     Float?   // em ms
+  tcpConnected        Boolean?
+  
+  // Métricas DNS
+  dnsResponseTime     Float?   // em ms
+  dnsResult           String?  // Resultado da resolução
+  dnsSuccess          Boolean?
+  
+  // Métricas consolidadas
+  downloadMbps        Float?   // Mbps
+  uploadMbps          Float?   // Mbps
+  downloadPercent     Float?   // Percentual
+  uploadPercent       Float?   // Percentual
+  
+  createdAt           DateTime @default(now())
+
+  link Links @relation(fields: [linkId], references: [id], onDelete: Cascade)
+
+  @@index([linkId, timestamp])
+}
+
+// Extend Group to have links
+model Group {
+  id       Int        @id @default(autoincrement())
+  name     String     @unique
+  printers Printers[]
+  servers  Servers[]
+  links    Links[]
+}

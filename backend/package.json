@@ -1,0 +1,41 @@
+{
+  "name": "safira-nms",
+  "version": "1.0.0",
+  "description": "Safira NMS - Network Monitoring System for Printers, Servers, and Internet Links",
+  "main": "index.js",
+ "scripts": {
+  "dev": "tsx src/app.ts",
+  "build": "tsc",
+  "start": "tsx src/app.ts"
+},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Axelbuild/safira-nms.git"
+  },
+  "keywords": ["monitoring", "snmp", "printer", "server", "network"],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Axelbuild/safira-nms/issues"
+  },
+  "homepage": "https://github.com/Axelbuild/safira-nms#readme",
+  "dependencies": {
+    "@fastify/cors": "^11.2.0",
+    "@prisma/adapter-pg": "^7.7.0",
+    "@prisma/client": "^7.7.0",
+    "express": "^5.2.1",
+    "fastify": "^5.8.5",
+    "net-snmp": "^3.26.1",
+    "nodemailer": "^8.0.5"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/net-snmp": "^3.23.0",
+    "@types/node": "^25.6.0",
+    "@types/nodemailer": "^8.0.0",
+    "prisma": "^7.7.0",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2"
+  }
+}
