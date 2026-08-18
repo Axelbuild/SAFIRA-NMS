@@ -14,7 +14,8 @@ export async function getPrinterController(
   _: FastifyRequest,
   reply: FastifyReply
 ) {
-  const data = await service.findAll();
+  const data = await service.findAll({ group: true });
+
   return reply.status(200).send(data);
 }
 
@@ -84,46 +85,7 @@ export async function getPrinterStatusController(
   reply: FastifyReply
 ) {
   try {
-    const printers = await prisma.printers.findMany();
-
-    const result = await Promise.all(
-      printers.map(async (printer) => {
-        try {
-          const status = await getPrinterStatus({
-            ip: printer.ip,
-            brand: printer.brand as "HP" | "Samsung",
-            model: printer.model,
-          });
-
-          const serialNumber = status.serialNumber ?? null;
-
-          return {
-            id: printer.id,
-            name: printer.name,
-            ip: printer.ip,
-            serialNumber: printer.serialNumber ?? serialNumber,
-            groupId: printer.groupId,
-            online: status.online,
-            ink: status.ink,
-          };
-        } catch (error) {
-          console.error(
-            `Erro ao buscar status da impressora ${printer.name}`,
-            error
-          );
-
-          return {
-            id: printer.id,
-            name: printer.name,
-            ip: printer.ip,
-            serialNumber: printer.serialNumber ?? null,
-            groupId: printer.groupId,
-            online: false,
-            ink: {},
-          };
-        }
-      })
-    );
+    const result = await service.getPrintersStatus();
 
     return reply.send(result);
   } catch (error) {
