@@ -41,6 +41,16 @@ test("DNS executa a consulta e retorna tempo numérico em ms mesmo na falha", as
   assert.equal(typeof result.metrics.responseTime, "number");
 });
 
+test("DNS lento abaixo do timeout pode resultar em SUSPECT e mantem ms", async () => {
+  const times = [100, 250];
+  const result = await monitorDns(
+    { dnsServer: "127.0.0.1", query: "slow.test", timeout: 1000, responseTimeThresholdMs: 100 },
+    { resolveDns: async () => ["127.0.0.42"], now: () => times.shift()! }
+  );
+  assert.equal(result.status, "SUSPECT");
+  assert.equal(result.metrics.responseTime, 150);
+});
+
 test("SNMP executa a consulta e retorna OFFLINE sem agente", async () => {
   const result = await monitorSnmp({ ip: "127.0.0.1", interfaceIndex: 1, timeout: 25, retries: 0 });
   assert.equal(result.status, "OFFLINE");

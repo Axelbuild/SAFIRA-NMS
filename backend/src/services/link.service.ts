@@ -4,6 +4,7 @@ import { isValidNumber } from "../utils/validators";
 import { isValidIP } from "../utils/ip";
 import { LinkInput, LinkMonitorInput, LinkMonitorType, LinkMonitorOutput } from "../types/link";
 import { mapLinkMonitorResponse, mapLinkMonitorsResponse } from "../serializers/link-monitor.serializer";
+import { assertValidDnsRecordType } from "./links/dns-monitor.config";
 
 function cleanString(value?: string | null) {
   if (!value) return null;
@@ -39,6 +40,7 @@ function validateMonitorConfig(monitorType: LinkMonitorType, config: Record<stri
     assertPositiveMilliseconds(config.responseTimeThresholdMs, "TCP config.responseTimeThresholdMs");
   } else {
     if (typeof config.dnsServer !== "string" || typeof config.query !== "string" || !config.dnsServer.trim() || !config.query.trim()) throw new Error("DNS config.dnsServer and config.query are required");
+    assertValidDnsRecordType(config.recordType);
     assertPositiveMilliseconds(config.timeout, "DNS config.timeout");
     assertPositiveMilliseconds(config.responseTimeThresholdMs, "DNS config.responseTimeThresholdMs");
   }

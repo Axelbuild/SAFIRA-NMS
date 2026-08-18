@@ -1,4 +1,3 @@
-import { Resolver } from "node:dns/promises";
 import { createConnection } from "node:net";
 import { performance } from "node:perf_hooks";
 import * as snmp from "net-snmp";
@@ -16,6 +15,7 @@ import {
   TCPMonitorConfig,
 } from "../../types/link";
 import { ICMPMonitor } from "./icmp.monitor.js";
+import { resolveDnsWithTimeout } from "./dns-query.js";
 
 export type ProtocolResult = {
   status: LinkStatus;
@@ -118,20 +118,22 @@ export async function monitorTcp(config: TCPMonitorConfig): Promise<ProtocolResu
   });
 }
 
-export async function monitorDns(config: DNSMonitorConfig): Promise<ProtocolResult> {
+type DnsMonitorDependencies = {
+  resolveDns?: typeof resolveDnsWithTimeout;
+  now?: () => number;
+};
+
+export async function monitorDns(config: DNSMonitorConfig, dependencies: DnsMonitorDependencies = {}): Promise<ProtocolResult> {
   const timeout = positiveMs(config.timeout, 5000);
-  const started = performance.now();
+  const now = dependencies.now ?? (() => performance.now());
+  const started = now();
   try {
-    const resolver = new Resolver(); resolver.setServers([config.dnsServer]);
-    const records = await Promise.race([
-      resolver.resolve(config.query, config.recordType ?? "A"),
-      new Promise<never>((_, reject) => setTimeout(() => reject(new Error("DNS timeout")), timeout)),
-    ]);
-    const responseTime = performance.now() - started;
+    const records = await (dependencies.resolveDns ?? resolveDnsWithTimeout)(config, timeout);
+    const responseTime = now() - started;
     const metrics: DNSMetrics = { responseTime, result: JSON.stringify(records), success: true, query: config.query, dnsServer: config.dnsServer };
     return { status: statusFor(true, responseTime, positiveMs(config.responseTimeThresholdMs, timeout)), metrics: metrics as Record<string, unknown> };
   } catch (error) {
-    const responseTime = performance.now() - started;
+    const responseTime = now() - started;
     return { status: "OFFLINE", metrics: { responseTime, success: false, query: config.query, dnsServer: config.dnsServer, error: error instanceof Error ? error.message : "DNS query failed" } };
   }
 }
