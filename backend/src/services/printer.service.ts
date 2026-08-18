@@ -6,6 +6,8 @@ import { PrinterInput } from "../types/printer";
 import { getPrinterSerialNumber } from "../snmp/printer.identity.service";
 import { PrintersInclude } from "../../generated/prisma/models";
 import { getPrinterStatus } from "../snmp/printer.service";
+import { getPrinterStatusConcurrency } from "../config/printer-status";
+import { getPrinterStatuses } from "./printer-status.service";
 
 function cleanString(value?: string | null) {
   if (!value) return null;
@@ -125,49 +127,10 @@ export class PrinterService {
   async getPrintersStatus() {
     const printers = await prisma.printers.findMany();
 
-    //! IMPORTATE: Muitas resposabilidades atribuída a apenas uma função, no caso o .map
-    // Todo: importante deixar só a parte sincrona aqui e trabalhar o restante fora da função
-    // Todo: Extrair a parte da promise para uma função externa
-    // Todo: Mapeamento de JSON e busca de status juntos, separar mapeamento
-    const result = await Promise.all(
-      printers.map(async (printer) => {
-        try {
-          const status = await getPrinterStatus({
-            ip: printer.ip,
-            brand: printer.brand as "HP" | "Samsung",
-            model: printer.model,
-          });
-
-          const serialNumber = status.serialNumber ?? null;
-
-          return {
-            id: printer.id,
-            name: printer.name,
-            ip: printer.ip,
-            serialNumber: printer.serialNumber ?? serialNumber,
-            groupId: printer.groupId,
-            online: status.online,
-            ink: status.ink,
-          };
-        } catch (error) {
-          console.error(
-            `Erro ao buscar status da impressora ${printer.name}`,
-            error
-          );
-
-          return {
-            id: printer.id,
-            name: printer.name,
-            ip: printer.ip,
-            serialNumber: printer.serialNumber ?? null,
-            groupId: printer.groupId,
-            online: false,
-            ink: {},
-          };
-        }
-      })
+    return getPrinterStatuses(
+      printers,
+      getPrinterStatusConcurrency(),
+      getPrinterStatus
     );
-
-    return result;
   }
 }

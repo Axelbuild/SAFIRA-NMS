@@ -1,16 +1,8 @@
 import { getPrinterStatus } from "../snmp/printer.service";
 import { prisma } from "../database";
 import { processPrinterAlerts } from "../services/printer.alert.service";
-
-function chunkArray<T>(items: T[], size: number): T[][] {
-  const chunks: T[][] = [];
-
-  for (let i = 0; i < items.length; i += size) {
-    chunks.push(items.slice(i, i + size));
-  }
-
-  return chunks;
-}
+import { getPrinterStatusConcurrency } from "../config/printer-status";
+import { mapWithConcurrency } from "../utils/map-with-concurrency";
 
 function resolvePrinterHealthStatus(params: {
   isOnlineNow: boolean;
@@ -47,11 +39,10 @@ function resolvePrinterHealthStatus(params: {
 export async function checkPrinters() {
   const printers = await prisma.printers.findMany();
 
-  const batches = chunkArray(printers, 5);
-
-  for (const batch of batches) {
-    await Promise.all(
-      batch.map(async (printer) => {
+  await mapWithConcurrency(
+    printers,
+    getPrinterStatusConcurrency(),
+    async (printer) => {
         try {
           const status = await getPrinterStatus({
             ip: printer.ip,
@@ -190,7 +181,6 @@ export async function checkPrinters() {
             },
           });
         }
-      })
-    );
-  }
+    }
+  );
 }
