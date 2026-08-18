@@ -1,4 +1,5 @@
 import { FastifyRequest, FastifyReply } from "fastify";
+
 import { PrinterService } from "../services/printer.service";
 import { PrinterInput } from "../types/printer";
 import { getPrinterStatus } from "../snmp/printer.service";
@@ -10,11 +11,11 @@ import { prisma } from "../database";
 const service = new PrinterService();
 
 export async function getPrinterController(
-  req: FastifyRequest,
+  _: FastifyRequest,
   reply: FastifyReply
 ) {
   const data = await service.findAll();
-  return reply.send(data);
+  return reply.status(200).send(data);
 }
 
 export async function postCreatePrinterController(
@@ -35,7 +36,7 @@ export async function postCreatePrinterController(
 }
 
 export async function runPrinterRecoveryController(
-  req: FastifyRequest,
+  _: FastifyRequest,
   reply: FastifyReply
 ) {
   try {
@@ -55,7 +56,7 @@ export async function runPrinterRecoveryController(
 }
 
 export async function cancelPrinterRecoveryController(
-  req: FastifyRequest,
+  _: FastifyRequest,
   reply: FastifyReply
 ) {
   requestRecoveryAbort();
@@ -79,7 +80,7 @@ export async function getPrinterByIdController(
 }
 
 export async function getPrinterStatusController(
-  req: FastifyRequest,
+  _: FastifyRequest,
   reply: FastifyReply
 ) {
   try {
@@ -135,7 +136,7 @@ export async function getPrinterStatusController(
 }
 
 export async function getLastPrinterStatusController(
-  req: FastifyRequest,
+  _: FastifyRequest,
   reply: FastifyReply
 ) {
   try {
